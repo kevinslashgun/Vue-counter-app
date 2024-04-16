@@ -16,25 +16,27 @@
     </section>
 </template>
 
-<script>
-export default {
-    data() {
-        return {
-            count: 0
-        };
-    },
-    methods: {
-        increment() {
-            this.count++;
-        },
-        decrement() {
-            this.count > 0 ? this.count-- : this.count;
-        },
-        reset() {
-            this.count = 0;
-        }
-    }
+<script setup>
+import { ref, watch } from 'vue';
+
+const count = localStorage.getItem('count') ? ref(Number(localStorage.getItem('count'))) : ref(0);
+
+const increment = () => {
+    count.value++;
 };
+
+const decrement = () => {
+    count.value > 0 ? count.value-- : count.value;
+};
+
+const reset = () => {
+    count.value = 0;
+};
+
+watch(count, () => {
+    localStorage.setItem('count', count.value);
+});
+
 </script>
 
 <style scoped>
